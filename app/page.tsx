@@ -15,7 +15,7 @@ export default function Home() {
           <p className="hero-eyebrow">✦ All Access Pass ✦</p>
           <h1 className="hero-title">Paulapalooza</h1>
           <div className="hero-date-banner">18 de Julho de 2026</div>
-          <p className="hero-edition">33ª Edição da Minha Vida</p>
+          <p className="hero-edition">33ª Edição</p>
           <a href="#rsvp" className="hero-cta">
             Confirmar Presença
           </a>
@@ -47,7 +47,12 @@ export default function Home() {
       </section>
 
       {/* LINEUP */}
-      <section className="section-wrap" style={{ background: 'linear-gradient(180deg, #0d0118 0%, #120229 100%)' }}>
+      <section
+        className="section-wrap"
+        style={{
+          background: 'linear-gradient(180deg, #0d0118 0%, #120229 100%)',
+        }}
+      >
         <div className="section-inner">
           <span className="section-eyebrow">Line-up</span>
           <h2 className="section-title">Atrações da Noite</h2>
@@ -63,25 +68,26 @@ export default function Home() {
             </div>
 
             <div className="lineup-card">
-              <span className="lineup-tag">✦ Special Guest ✦</span>
-              <h3 className="lineup-card-name">Charlie Brown Jr</h3>
+              <span className="lineup-tag">✦ KARAOKÊ ✦</span>
+              <h3 className="lineup-card-name">PARTICIPE DO SHOW</h3>
               <p className="lineup-card-desc">
-                Rock, nostalgia e muito axé. A trilha sonora dos melhores momentos.
+                Solte a voz, escolha sua música favorita e faça parte dessa
+                experiência antes da atração principal..
               </p>
             </div>
 
             <div className="lineup-card">
-              <span className="lineup-tag">✦ Headliner ✦</span>
-              <h3 className="lineup-card-name">Paramore</h3>
+              <span className="lineup-tag">✦ TRANSMISSÃO ESPECIAL ✦</span>
+              <h3 className="lineup-card-name">DISPUTA DE 3º LUGAR</h3>
               <p className="lineup-card-desc">
-                O headliner que a noite pede. Alt-rock e pop punk puro para fechar com chave de ouro.
+                Curta o jogo em um telão especial e torça com a galera.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* MERCH / GALLERY */}
+      {/*   MERCH / GALLERY 
       <section className="section-wrap">
         <div className="section-inner">
           <span className="section-eyebrow">Experiência</span>
@@ -91,7 +97,7 @@ export default function Home() {
           <div className="merch-grid">
             <div className="merch-item" style={{ aspectRatio: '3/2' }}>
               <Image
-                src="/images/WhatsApp_Image_2026-06-16_at_19.04.27_(1).jpeg"
+                src="public/images/WhatsApp_Image_2026-06-16_at_19.04.27_(1).jpeg"
                 alt="Pulseira All Access Pass Paulapalooza"
                 fill
                 style={{ objectFit: 'cover' }}
@@ -111,7 +117,10 @@ export default function Home() {
               <span className="merch-caption">Copo Exclusivo</span>
             </div>
 
-            <div className="merch-item" style={{ gridColumn: '1 / -1', aspectRatio: '16/7' }}>
+            <div
+              className="merch-item"
+              style={{ gridColumn: '1 / -1', aspectRatio: '16/7' }}
+            >
               <Image
                 src="/images/WhatsApp_Image_2026-06-16_at_19.04.28.jpeg"
                 alt="Decoração festa Paulapalooza"
@@ -123,12 +132,14 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* EVENT INFO */}
       <section
         className="section-wrap"
-        style={{ background: 'linear-gradient(180deg, #0d0118, #150328, #0d0118)' }}
+        style={{
+          background: 'linear-gradient(180deg, #0d0118, #150328, #0d0118)',
+        }}
       >
         <div className="section-inner">
           <span className="section-eyebrow">Informações</span>
@@ -146,22 +157,30 @@ export default function Home() {
             <div className="info-card">
               <span className="info-icon">🎟</span>
               <div className="info-card-label">Ingresso</div>
-              <div className="info-card-value">All Access</div>
-              <div className="info-card-sub">Convite especial</div>
+              <div className="info-card-value">CONFIRME SUA PRESENÇA</div>
+              <div className="info-card-sub">
+                Garanta sua participação confirmando presença.
+              </div>
             </div>
 
             <div className="info-card">
               <span className="info-icon">✨</span>
-              <div className="info-card-label">Edição</div>
-              <div className="info-card-value">33ª</div>
-              <div className="info-card-sub">Da vida dela</div>
+              <div className="info-card-label">HORÁRIO</div>
+              <div className="info-card-value">15H ÀS 21H</div>
+              <div className="info-card-sub">
+                Uma tarde e noite de muita diversão.
+              </div>
             </div>
 
             <div className="info-card">
               <span className="info-icon">💜</span>
-              <div className="info-card-label">Dress Code</div>
-              <div className="info-card-value">Roxo & Glitter</div>
-              <div className="info-card-sub">Brilhe muito!</div>
+              <div className="info-card-label">LOCAL</div>
+              <div className="info-card-value">
+                Espaço 162 - Meu Karaokê Box
+              </div>
+              <div className="info-card-sub">
+                Av. Nazaré, 162 - Ipiranga, São Paulo - SP, 04262-000
+              </div>
             </div>
           </div>
         </div>
@@ -180,10 +199,27 @@ export default function Home() {
         </div>
       </section>
 
+      {/* MAPA */}
+      <section id="mapa" className="section-wrap rsvp-section-bg">
+        <div className="section-inner">
+          <span className="section-eyebrow">Localização</span>
+          <h2 className="section-title">Como chegar?</h2>
+          <div className="section-rule">✦</div>
+          <div className="rsvp-card">
+            <iframe
+              src="https://maps.google.com/maps?q=Av.%20Nazar%C3%A9,%20162%20-%20Ipiranga,%20S%C3%A3o%20Paulo%20-%20SP,%2004262-000&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="450"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </div>
+      </section>
+
       {/* FOOTER */}
       <footer className="footer">
         <span className="footer-logo">Paulapalooza</span>
-        <p className="footer-text">33ª Edição da Minha Vida · 18.07.2026</p>
+        Developed with ❤️ by Thomas Estanislau.
       </footer>
     </main>
   );
