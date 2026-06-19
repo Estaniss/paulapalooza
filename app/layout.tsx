@@ -27,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-BR" className={`${inter.variable} ${bebasNeue.variable}`}>
-      <body className={audiowide.className}>{children}</body>
+      <body>{children}</body>
     </html>
   );
 }
