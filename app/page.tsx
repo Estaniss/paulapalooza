@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import PaulapaloozaLogo from './components/LogoPaula';
 import RSVPForm from './components/RSVPForm';
 import Sparkles from './components/Sparkles';
 
@@ -12,8 +12,8 @@ export default function Home() {
         <Sparkles count={70} />
 
         <div className="hero-content">
-          <p className="hero-eyebrow">✦ All Access Pass ✦</p>
-          <h1 className="hero-title">Paulapalooza</h1>
+          <p className="hero-eyebrow">{`✦ PAULA'S BIRTHDAY FEST ✦`}</p>
+          <PaulapaloozaLogo />  
           <div className="hero-date-banner">18 de Julho de 2026</div>
           <p className="hero-edition">33ª Edição</p>
           <a href="#rsvp" className="hero-cta">
@@ -27,7 +27,7 @@ export default function Home() {
         <div className="section-inner" style={{ textAlign: 'center' }}>
           <span className="headliner-badge">✦ Headliner ✦</span>
           <h2 className="headliner-name">Paula Lie Sato</h2>
-          <p className="headliner-since">Headliner desde 1993</p>
+          <p className="headliner-since">Since 1993</p>
 
           <div className="stats-row">
             <div className="stat-item">
