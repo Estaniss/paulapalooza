@@ -47,9 +47,6 @@ export default async function AdminPage({
 
   const confirmados = rsvps.filter((r) => r.will_attend).length;
   const recusados = rsvps.filter((r) => !r.will_attend).length;
-  const comAcompanhante = rsvps.filter(
-    (r) => r.will_attend && r.plus_one
-  ).length;
   const totalAcompanhantes = rsvps
     .filter((r) => r.will_attend && r.plus_one)
     .reduce((sum, r) => sum + (r.guest_count || 0), 0);
@@ -58,7 +55,7 @@ export default async function AdminPage({
   const stats = [
     { label: 'Confirmados', value: confirmados, icon: '✅' },
     { label: 'Não vão', value: recusados, icon: '❌' },
-    { label: 'Com acompanhante', value: comAcompanhante, icon: '👯' },
+    { label: 'Total de acompanhantes', value: totalAcompanhantes, icon: '👯' },
     { label: 'Total de pessoas', value: totalPessoas, icon: '🎉' },
   ];
 
@@ -267,7 +264,7 @@ export default async function AdminPage({
                       fontSize: '14px',
                     }}
                   >
-                    {`${idx + 1} - ${entry}`}
+                    {entry}
                   </li>
                 ))}
               </ol>
