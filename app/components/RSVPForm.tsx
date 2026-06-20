@@ -46,7 +46,9 @@ export default function RSVPForm() {
       <div className="success-card">
         <div className="sparkle-ring">✦</div>
         <h3 className="success-title">
-          {willAttend ? 'Uhuuul! Você está confirmado! 🎉' : 'Que pena! Vamos sentir sua falta 💜'}
+          {willAttend
+            ? 'Uhuuul! Você está confirmado! 🎉'
+            : 'Que pena! Uma estrela a menos vai brilhar na Paulapalooza 💜✨😢'}
         </h3>
         <p className="success-text">
           {willAttend
@@ -99,7 +101,7 @@ export default function RSVPForm() {
             className={`attend-btn attend-no ${willAttend === false ? 'active' : ''}`}
             onClick={() => setWillAttend(false)}
           >
-            Não consigo
+            😭 Não consigo
           </button>
         </div>
       </div>

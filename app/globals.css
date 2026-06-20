@@ -114,13 +114,13 @@ body {
 /* ===== HERO ===== */
 .hero {
   position: relative;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   overflow: hidden;
   padding-bottom: 60px;
+  padding-top: 80px;
 }
 
 .hero-bg {
@@ -239,7 +239,7 @@ body {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 5;
+  z-index: 9000;
 }
 
 .sparkle {
@@ -265,6 +265,7 @@ body {
 /* ===== SHARED SECTION ===== */
 .section-wrap {
   padding: 80px 20px;
+  position: relative;
 }
 
 .section-inner {
@@ -442,47 +443,15 @@ body {
   line-height: 1.55;
 }
 
-/* ===== MERCH ===== */
-.merch-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.merch-item {
-  border-radius: 18px;
-  overflow: hidden;
-  position: relative;
-  border: 1px solid rgba(192, 132, 252, 0.2);
-  transition:
-    transform 0.3s,
-    box-shadow 0.3s;
-}
-
-.merch-item:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 40px rgba(124, 58, 237, 0.5);
-}
-
-.merch-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.lineup-link {
+  text-decoration: none;
+  color: inherit;
   display: block;
+  cursor: pointer;
 }
 
-.merch-caption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 28px 14px 12px;
-  background: linear-gradient(to top, rgba(13, 1, 24, 0.9), transparent);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--purple-glow);
+.lineup-link:hover {
+  transform: translateY(-4px);
 }
 
 /* ===== EVENT INFO ===== */
@@ -823,4 +792,47 @@ body {
 
   filter: drop-shadow(6px 6px 0 #000)
     drop-shadow(12px 12px 12px rgba(0, 0, 0, 0.5));
+}
+
+/* ===== Yakudoshi ===== */
+.yakudoshi-label {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--purple-glow);
+}
+
+/* ===== Modal ===== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+.modal-content {
+  width: min(900px, 95vw);
+  background: #111;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 10;
+  border: none;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
 }
