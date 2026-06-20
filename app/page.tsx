@@ -58,15 +58,14 @@ export default function Home() {
           <div className="section-rule">✦</div>
           <div className="lineup-card">
             <label className="yakudoshi-label">
-              Em 2026 completo 33 anos e, para a tradição japonesa, essa é uma
-              idade muito especial para as mulheres. Os 33 anos marcam o
-              Yakudoshi, um período simbólico de transição, renovação e novos
-              começos. Por isso, o Paulapaloozza é mais do que uma festa de
-              aniversário. É uma celebração dos 32 anos vividos até aqui, das
-              pessoas que fizeram parte dessa caminhada e da chegada de um novo
-              ciclo. Que as energias negativas fiquem para trás e que os
-              próximos anos sejam repletos de saúde, felicidade, conquistas e
-              momentos inesquecíveis. Será uma alegria celebrar esse momento tão
+              Os 33 anos marcam o Yakudoshi, um período simbólico de transição,
+              renovação e novos começos para a mulher japonesa. Por isso, o
+              Paulapaloozza é mais do que uma festa de aniversário. É uma
+              celebração dos 32 anos vividos até aqui, das pessoas que fizeram
+              parte dessa caminhada e da chegada de um novo ciclo. Que as
+              energias negativas fiquem para trás e que os próximos anos sejam
+              repletos de saúde, felicidade, conquistas e momentos
+              inesquecíveis. Será uma alegria celebrar esse momento tão
               importante ao lado de vocês. 💜
             </label>
           </div>
@@ -98,17 +97,16 @@ export default function Home() {
               <span className="lineup-tag">✦ KARAOKÊ ✦</span>
               <h3 className="lineup-card-name">PARTICIPE DO SHOW</h3>
               <p className="lineup-card-desc">
-                Solte a voz, escolha sua música favorita e faça parte dessa
-                experiência antes da atração principal.( Clique para escolher
-                sua música 🎤)
+                Atenção! Escolha sua música, entregue vocais, coreografia e
+                emoção. O palco é seu, se torne uma estrela ✨!
               </p>
             </a>
 
             <div className="lineup-card">
               <span className="lineup-tag">
-                ✦ TRANSMISSÃO ESPECIAL DA COPA DO MUNDO ✦
+                ✦ TRANSMISSÃO DA COPA DO MUNDO ✦
               </span>
-              <h3 className="lineup-card-name">DISPUTA DE 3º LUGAR</h3>
+              <h3 className="lineup-card-name">DISPUTA DO 3º LUGAR</h3>
               <p className="lineup-card-desc">
                 Curta o jogo em um telão especial e torça com a galera.
               </p>

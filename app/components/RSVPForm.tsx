@@ -1,5 +1,5 @@
 'use client';
-
+import Image from 'next/image';
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 
@@ -10,15 +10,60 @@ export default function RSVPForm() {
   const [phone, setPhone] = useState('');
   const [willAttend, setWillAttend] = useState<boolean | null>(null);
   const [plusOne, setPlusOne] = useState(false);
-  const [plusOneName, setPlusOneName] = useState('');
+  const [guestCount, setGuestCount] = useState(1);
+  const [guestNames, setGuestNames] = useState<string[]>(['']);
   const [message, setMessage] = useState('');
   const [formState, setFormState] = useState<FormState>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+
+  function handleGuestCountChange(count: number) {
+    const safeCount = Math.max(1, count);
+    setGuestCount(safeCount);
+    setGuestNames((prev) => {
+      const updated = [...prev];
+      if (safeCount > updated.length) {
+        while (updated.length < safeCount) updated.push('');
+      } else {
+        updated.length = safeCount;
+      }
+      return updated;
+    });
+  }
+
+  function formatPhone(value: string) {
+    const numbers = value.replace(/\D/g, '').slice(0, 11);
+
+    if (numbers.length <= 2) {
+      return numbers;
+    }
+
+    if (numbers.length <= 7) {
+      return `(${numbers.slice(0, 2)}) ${numbers.slice(2)}`;
+    }
+
+    return `(${numbers.slice(0, 2)}) ${numbers.slice(2, 7)}-${numbers.slice(7)}`;
+  }
+
+  function gerarCodigoNumerico(): string {
+    return Math.floor(1000 + Math.random() * 9000).toString();
+  }
+
+  function handleGuestNameChange(index: number, value: string) {
+    setGuestNames((prev) => {
+      const updated = [...prev];
+      updated[index] = value;
+      return updated;
+    });
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (willAttend === null) {
       setErrorMsg('Por favor, confirme se vai ou não comparecer.');
+      return;
+    }
+    if (plusOne && guestNames.some((n) => !n.trim())) {
+      setErrorMsg('Por favor, preencha o nome de todos os acompanhantes.');
       return;
     }
     setFormState('submitting');
@@ -29,7 +74,8 @@ export default function RSVPForm() {
       phone: phone.trim(),
       will_attend: willAttend,
       plus_one: plusOne,
-      plus_one_name: plusOne ? plusOneName.trim() : null,
+      guest_count: plusOne ? guestCount : 0,
+      guest_names: plusOne ? guestNames.map((n) => n.trim()) : [],
       message: message.trim() || null,
     });
 
@@ -44,18 +90,40 @@ export default function RSVPForm() {
   if (formState === 'success') {
     return (
       <div className="success-card">
-        <div className="sparkle-ring">✦</div>
-        <h3 className="success-title">
-          {willAttend
-            ? 'Uhuuul! Você está confirmado! 🎉'
-            : 'Que pena! Uma estrela a menos vai brilhar na Paulapalooza 💜✨😢'}
-        </h3>
-        <p className="success-text">
-          {willAttend
-            ? 'Seu All Access Pass está garantido. Nos vemos na Paulapalooza!'
-            : 'Obrigada por avisar. Você sempre estará no nosso coração!'}
-        </p>
-        <div className="stars-row">✦ ✦ ✦ ✦ ✦</div>
+        {willAttend ? (
+          <>
+            <h3 className="success-title">Uhuuul! Você está confirmado!</h3>
+            <div className="success-image">
+              <Image
+                src="/images/qrcode-roxo.png"
+                alt="QR Code de acesso"
+                width={220}
+                height={220}
+                priority
+              />
+              <p className="success-text">{`PAULAPALOOSA16072026${gerarCodigoNumerico()}`}</p>
+            </div>
+
+            <p className="success-text">
+              Seu All Access Pass está garantido. Apresente este QR Code na
+              entrada da Paulapalooza! 💜✨
+            </p>
+
+            <div className="stars-row">✦ ✦ ✦ ✦ ✦</div>
+          </>
+        ) : (
+          <>
+            <h3 className="success-title">
+              Que pena! Uma estrela a menos vai brilhar na Paulapalooza 💜✨😢
+            </h3>
+
+            <p className="success-text">
+              Obrigada por avisar. Você sempre estará no nosso coração!
+            </p>
+
+            <div className="stars-row">💜 ✨ 💜 ✨ 💜</div>
+          </>
+        )}
       </div>
     );
   }
@@ -81,7 +149,7 @@ export default function RSVPForm() {
           className="form-input"
           placeholder="(11) 99999-9999"
           value={phone}
-          onChange={(e) => setPhone(e.target.value)}
+          onChange={(e) => setPhone(formatPhone(e.target.value))}
           required
         />
       </div>
@@ -114,24 +182,53 @@ export default function RSVPForm() {
                 type="checkbox"
                 className="form-checkbox"
                 checked={plusOne}
-                onChange={(e) => setPlusOne(e.target.checked)}
+                onChange={(e) => {
+                  setPlusOne(e.target.checked);
+                  if (e.target.checked && guestNames.length === 0) {
+                    setGuestCount(1);
+                    setGuestNames(['']);
+                  }
+                }}
               />
-              Vou levar acompanhante
+              Vou levar acompanhante(s)
             </label>
           </div>
 
           {plusOne && (
-            <div className="form-group">
-              <label className="form-label">Nome do acompanhante</label>
-              <input
-                type="text"
-                className="form-input"
-                placeholder="Nome do acompanhante"
-                value={plusOneName}
-                onChange={(e) => setPlusOneName(e.target.value)}
-                required={plusOne}
-              />
-            </div>
+            <>
+              <div className="form-group">
+                <label className="form-label">Quantos acompanhantes?</label>
+                <input
+                  type="number"
+                  min={1}
+                  className="form-input"
+                  value={guestCount}
+                  onChange={(e) =>
+                    handleGuestCountChange(parseInt(e.target.value, 10) || 1)
+                  }
+                  required
+                />
+              </div>
+
+              {guestNames.map((guestName, index) => (
+                <div className="form-group" key={index}>
+                  <label className="form-label">
+                    Nome do acompanhante{' '}
+                    {guestNames.length > 1 ? index + 1 : ''}
+                  </label>
+                  <input
+                    type="text"
+                    className="form-input"
+                    placeholder="Nome completo"
+                    value={guestName}
+                    onChange={(e) =>
+                      handleGuestNameChange(index, e.target.value)
+                    }
+                    required
+                  />
+                </div>
+              ))}
+            </>
           )}
         </>
       )}

@@ -13,7 +13,8 @@ type Rsvp = {
   phone: string;
   will_attend: boolean;
   plus_one: boolean;
-  plus_one_name: string | null;
+  guest_count: number;
+  guest_names: string[] | null;
   message: string | null;
   created_at: string;
 };
@@ -32,7 +33,16 @@ async function getRsvps(): Promise<Rsvp[]> {
   return data ?? [];
 }
 
-export default async function AdminPage() {
+type SearchParams = { [key: string]: string | string[] | undefined };
+
+export default async function AdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>;
+}) {
+  const params = await searchParams;
+  const filter = typeof params.filter === 'string' ? params.filter : 'all'; // all | yes | no
+
   const rsvps = await getRsvps();
 
   const confirmados = rsvps.filter((r) => r.will_attend).length;
@@ -40,13 +50,45 @@ export default async function AdminPage() {
   const comAcompanhante = rsvps.filter(
     (r) => r.will_attend && r.plus_one
   ).length;
-  const totalPessoas = confirmados + comAcompanhante;
+  const totalAcompanhantes = rsvps
+    .filter((r) => r.will_attend && r.plus_one)
+    .reduce((sum, r) => sum + (r.guest_count || 0), 0);
+  const totalPessoas = confirmados + totalAcompanhantes;
 
   const stats = [
     { label: 'Confirmados', value: confirmados, icon: '✅' },
     { label: 'Não vão', value: recusados, icon: '❌' },
     { label: 'Com acompanhante', value: comAcompanhante, icon: '👯' },
     { label: 'Total de pessoas', value: totalPessoas, icon: '🎉' },
+  ];
+
+  const filteredRsvps = rsvps.filter((r) => {
+    if (filter === 'yes') return r.will_attend;
+    if (filter === 'no') return !r.will_attend;
+    return true;
+  });
+
+  // Lista simples: nome de quem vai + nomes dos acompanhantes,
+  // numerada, no formato "Nome Acompanhante - (Convidado)"
+  const nameList: string[] = [];
+  rsvps
+    .filter((r) => r.will_attend)
+    .forEach((r) => {
+      nameList.push(r.name);
+      if (r.plus_one && r.guest_names) {
+        r.guest_names
+          .filter((n) => n && n.trim())
+          .forEach((guestName) => {
+            nameList.push(`${guestName} - (Convidado de ${r.name})`);
+          });
+      }
+    });
+
+  const filters = [
+    { key: 'all', label: 'Todos', count: rsvps.length },
+    { key: 'yes', label: 'Vão', count: confirmados },
+    { key: 'no', label: 'Não vão', count: recusados },
+    { key: 'lista', label: 'Lista de nomes', count: nameList.length },
   ];
 
   return (
@@ -95,7 +137,7 @@ export default async function AdminPage() {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
             gap: '16px',
-            marginBottom: '40px',
+            marginBottom: '32px',
           }}
         >
           {stats.map((stat) => (
@@ -128,34 +170,72 @@ export default async function AdminPage() {
           ))}
         </div>
 
-        {/* Tabela */}
+        {/* Filtro */}
         <div
           style={{
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            borderRadius: '16px',
-            overflow: 'hidden',
+            display: 'flex',
+            gap: '10px',
+            marginBottom: '20px',
+            flexWrap: 'wrap',
           }}
         >
+          {filters.map((f) => {
+            const isActive = filter === f.key;
+            return (
+              <a
+                key={f.key}
+                href={f.key === 'all' ? '?' : `?filter=${f.key}`}
+                style={{
+                  textDecoration: 'none',
+                  padding: '8px 16px',
+                  borderRadius: '999px',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  border: isActive
+                    ? '1px solid #c9a6ff'
+                    : '1px solid rgba(255,255,255,0.15)',
+                  background: isActive
+                    ? 'rgba(201,166,255,0.18)'
+                    : 'rgba(255,255,255,0.04)',
+                  color: isActive ? '#e6d6ff' : 'rgba(255,255,255,0.7)',
+                }}
+              >
+                {f.label} ({f.count})
+              </a>
+            );
+          })}
+        </div>
+
+        {/* Lista de nomes numerada */}
+        {filter === 'lista' ? (
           <div
             style={{
-              padding: '18px 24px',
-              borderBottom: '1px solid rgba(255,255,255,0.1)',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '16px',
+              overflow: 'hidden',
             }}
           >
-            <h2 style={{ fontSize: '16px', fontWeight: 700, margin: 0 }}>
-              Respostas
-            </h2>
-            <span style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}>
-              {rsvps.length} no total
-            </span>
-          </div>
+            <div
+              style={{
+                padding: '18px 24px',
+                borderBottom: '1px solid rgba(255,255,255,0.1)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <h2 style={{ fontSize: '16px', fontWeight: 700, margin: 0 }}>
+                Lista de nomes
+              </h2>
+              <span
+                style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}
+              >
+                {nameList.length} no total
+              </span>
+            </div>
 
-          <div style={{ overflowX: 'auto' }}>
-            {rsvps.length === 0 ? (
+            {nameList.length === 0 ? (
               <div
                 style={{
                   padding: '48px 24px',
@@ -163,105 +243,179 @@ export default async function AdminPage() {
                   color: 'rgba(255,255,255,0.6)',
                 }}
               >
-                Ainda não há respostas por aqui.
+                Ninguém confirmado ainda.
               </div>
             ) : (
-              <table
+              <ol
                 style={{
-                  width: '100%',
-                  borderCollapse: 'collapse',
-                  fontSize: '14px',
+                  margin: 0,
+                  padding: '8px 0',
+                  listStylePosition: 'inside',
                 }}
               >
-                <thead>
-                  <tr style={{ textAlign: 'left' }}>
-                    {[
-                      'Nome',
-                      'Telefone',
-                      'Vai?',
-                      'Acompanhante',
-                      'Nome Acompanhante',
-                      'Mensagem',
-                      'Data',
-                    ].map((h) => (
-                      <th
-                        key={h}
-                        style={{
-                          padding: '12px 24px',
-                          fontSize: '12px',
-                          textTransform: 'uppercase',
-                          letterSpacing: '0.06em',
-                          color: 'rgba(255,255,255,0.55)',
-                          fontWeight: 600,
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {rsvps.map((rsvp, i) => (
-                    <tr
-                      key={rsvp.id}
-                      style={{
-                        background:
-                          i % 2 === 0
-                            ? 'transparent'
-                            : 'rgba(255,255,255,0.03)',
-                        borderTop: '1px solid rgba(255,255,255,0.06)',
-                      }}
-                    >
-                      <td style={{ padding: '12px 24px', fontWeight: 600 }}>
-                        {rsvp.name}
-                      </td>
-                      <td
-                        style={{ padding: '12px 24px', whiteSpace: 'nowrap' }}
-                      >
-                        {rsvp.phone}
-                      </td>
-                      <td
-                        style={{ padding: '12px 24px', whiteSpace: 'nowrap' }}
-                      >
-                        {rsvp.will_attend ? (
-                          <span style={{ color: '#7CFFB2' }}>✅ Sim</span>
-                        ) : (
-                          <span style={{ color: '#FF8FA3' }}>❌ Não</span>
-                        )}
-                      </td>
-                      <td style={{ padding: '12px 24px' }}>
-                        {rsvp.plus_one ? 'Sim' : 'Não'}
-                      </td>
-                      <td style={{ padding: '12px 24px' }}>
-                        {rsvp.plus_one_name || '-'}
-                      </td>
-                      <td
-                        style={{
-                          padding: '12px 24px',
-                          maxWidth: '260px',
-                          color: 'rgba(255,255,255,0.8)',
-                        }}
-                      >
-                        {rsvp.message || '-'}
-                      </td>
-                      <td
-                        style={{
-                          padding: '12px 24px',
-                          whiteSpace: 'nowrap',
-                          color: 'rgba(255,255,255,0.6)',
-                        }}
-                      >
-                        {new Date(rsvp.created_at).toLocaleString('pt-BR')}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+                {nameList.map((entry, idx) => (
+                  <li
+                    key={idx}
+                    style={{
+                      padding: '12px 24px',
+                      borderTop:
+                        idx === 0 ? 'none' : '1px solid rgba(255,255,255,0.06)',
+                      background:
+                        idx % 2 === 0
+                          ? 'transparent'
+                          : 'rgba(255,255,255,0.03)',
+                      fontSize: '14px',
+                    }}
+                  >
+                    {`${idx + 1} - ${entry}`}
+                  </li>
+                ))}
+              </ol>
             )}
           </div>
-        </div>
+        ) : (
+          <div
+            style={{
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: '16px',
+              overflow: 'hidden',
+            }}
+          >
+            <div
+              style={{
+                padding: '18px 24px',
+                borderBottom: '1px solid rgba(255,255,255,0.1)',
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <h2 style={{ fontSize: '16px', fontWeight: 700, margin: 0 }}>
+                Respostas
+              </h2>
+              <span
+                style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}
+              >
+                {filteredRsvps.length} exibidas de {rsvps.length}
+              </span>
+            </div>
+
+            <div style={{ overflowX: 'auto' }}>
+              {filteredRsvps.length === 0 ? (
+                <div
+                  style={{
+                    padding: '48px 24px',
+                    textAlign: 'center',
+                    color: 'rgba(255,255,255,0.6)',
+                  }}
+                >
+                  Nenhuma resposta encontrada para esse filtro.
+                </div>
+              ) : (
+                <table
+                  style={{
+                    width: '100%',
+                    borderCollapse: 'collapse',
+                    fontSize: '14px',
+                  }}
+                >
+                  <thead>
+                    <tr style={{ textAlign: 'left' }}>
+                      {[
+                        'Nome',
+                        'Telefone',
+                        'Vai?',
+                        'Qtd. Acompanhantes',
+                        'Nomes Acompanhantes',
+                        'Mensagem',
+                        'Data',
+                      ].map((h) => (
+                        <th
+                          key={h}
+                          style={{
+                            padding: '12px 24px',
+                            fontSize: '12px',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.06em',
+                            color: 'rgba(255,255,255,0.55)',
+                            fontWeight: 600,
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {h}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {filteredRsvps.map((rsvp, i) => (
+                      <tr
+                        key={rsvp.id}
+                        style={{
+                          background:
+                            i % 2 === 0
+                              ? 'transparent'
+                              : 'rgba(255,255,255,0.03)',
+                          borderTop: '1px solid rgba(255,255,255,0.06)',
+                        }}
+                      >
+                        <td style={{ padding: '12px 24px', fontWeight: 600 }}>
+                          {rsvp.name}
+                        </td>
+                        <td
+                          style={{ padding: '12px 24px', whiteSpace: 'nowrap' }}
+                        >
+                          {rsvp.phone}
+                        </td>
+                        <td
+                          style={{ padding: '12px 24px', whiteSpace: 'nowrap' }}
+                        >
+                          {rsvp.will_attend ? (
+                            <span style={{ color: '#7CFFB2' }}>✅ Sim</span>
+                          ) : (
+                            <span style={{ color: '#FF8FA3' }}>❌ Não</span>
+                          )}
+                        </td>
+                        <td
+                          style={{ padding: '12px 24px', textAlign: 'center' }}
+                        >
+                          {rsvp.plus_one ? rsvp.guest_count : '-'}
+                        </td>
+                        <td style={{ padding: '12px 24px' }}>
+                          {rsvp.plus_one &&
+                          rsvp.guest_names &&
+                          rsvp.guest_names.length > 0
+                            ? rsvp.guest_names.join(', ')
+                            : '-'}
+                        </td>
+                        <td
+                          style={{
+                            padding: '12px 24px',
+                            maxWidth: '260px',
+                            color: 'rgba(255,255,255,0.8)',
+                          }}
+                        >
+                          {rsvp.message || '-'}
+                        </td>
+                        <td
+                          style={{
+                            padding: '12px 24px',
+                            whiteSpace: 'nowrap',
+                            color: 'rgba(255,255,255,0.6)',
+                          }}
+                        >
+                          {new Date(rsvp.created_at).toLocaleString('pt-BR')}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );
