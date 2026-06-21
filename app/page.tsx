@@ -148,7 +148,7 @@ export default function Home() {
             <div className="info-card">
               <span className="info-icon">✨</span>
               <div className="info-card-label">HORÁRIO</div>
-              <div className="info-card-value">15H ÀS 21H</div>
+              <div className="info-card-value">ABERTURA DOS PORTÕES ÀS 15H</div>
               <div className="info-card-sub">
                 Uma tarde e noite de muita diversão.
               </div>

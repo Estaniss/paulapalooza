@@ -242,7 +242,9 @@ export default function RSVPForm() {
                     value={guestCount}
                     onChange={(e) => {
                       const val = e.target.value.replace(/\D/g, '');
-                      handleGuestCountChange(val ? parseInt(val, 10) : 1);
+                      let num = val ? parseInt(val, 10) : 1;
+                      if (num > 9) num = 9;
+                      handleGuestCountChange(num);
                     }}
                     required
                   />
@@ -250,6 +252,7 @@ export default function RSVPForm() {
                     type="button"
                     className="stepper-btn"
                     onClick={() => handleGuestCountChange(guestCount + 1)}
+                    disabled={guestCount >= 5}
                   >
                     ➕
                   </button>
