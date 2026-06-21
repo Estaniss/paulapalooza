@@ -199,7 +199,11 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      {/*       <section className="gift-alert">
+        <div className="gift-alert-content">
+          <h2>🎁 NÃO ESQUEÇA DO PRESENTE !!! 🎁</h2>
+        </div>
+      </section> */}
       {/* FOOTER */}
       <footer className="footer">
         <span className="footer-logo">Paulapalooza</span>

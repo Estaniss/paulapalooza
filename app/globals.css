@@ -689,6 +689,23 @@ body {
   cursor: not-allowed;
 }
 
+.guest-stepper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.stepper-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 1;
+}
+.stepper-input {
+  text-align: center;
+  width: 60px;
+}
+
 /* ===== SUCCESS ===== */
 .success-card {
   text-align: center;
@@ -854,4 +871,60 @@ body {
 
 .success-image img:hover {
   transform: scale(1.05);
+}
+
+.gift-alert {
+  margin: 4rem 0;
+  padding: 2rem;
+  border-radius: 24px;
+  background: linear-gradient(135deg, #c084fc, #e879f9, #f472b6, #c084fc);
+  background-size: 300% 300%;
+  animation: gradientMove 6s ease infinite;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(192, 132, 252, 0.5);
+}
+
+.gift-alert-content h2 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 900;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 1rem;
+  animation: pulse 1.2s infinite;
+}
+
+.gift-alert-content p {
+  color: white;
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0.75rem auto;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }

@@ -69,9 +69,30 @@ export default function RSVPForm() {
     setFormState('submitting');
     setErrorMsg('');
 
+    // checa duplicidade
+    const { data: existing, error: checkError } = await supabase
+      .from('rsvps')
+      .select('id')
+      .eq('phone', phone)
+      .maybeSingle();
+
+    if (checkError) {
+      setFormState('error');
+      setErrorMsg('Ocorreu um erro ao validar o telefone. Tente novamente.');
+      return;
+    }
+
+    if (existing) {
+      setFormState('error');
+      setErrorMsg(
+        '✨Relaxa! Seu nome já está na lista VIP da Paulapalooza. 💜'
+      );
+      return;
+    }
+
     const { error } = await supabase.from('rsvps').insert({
       name: name.trim(),
-      phone: phone.trim(),
+      phone: phone,
       will_attend: willAttend,
       plus_one: plusOne,
       guest_count: plusOne ? guestCount : 0,
@@ -80,8 +101,14 @@ export default function RSVPForm() {
     });
 
     if (error) {
+      if (error.code === '23505') {
+        setErrorMsg(
+          '✨Relaxa! Seu nome já está na lista VIP da Paulapalooza. 💜'
+        );
+      } else {
+        setErrorMsg('Ocorreu um erro. Tente novamente.');
+      }
       setFormState('error');
-      setErrorMsg('Ocorreu um erro. Tente novamente.');
     } else {
       setFormState('success');
     }
@@ -198,16 +225,35 @@ export default function RSVPForm() {
             <>
               <div className="form-group">
                 <label className="form-label">Quantos acompanhantes?</label>
-                <input
-                  type="number"
-                  min={1}
-                  className="form-input"
-                  value={guestCount}
-                  onChange={(e) =>
-                    handleGuestCountChange(parseInt(e.target.value, 10) || 1)
-                  }
-                  required
-                />
+                <div className="guest-stepper">
+                  <button
+                    type="button"
+                    className="stepper-btn"
+                    onClick={() => handleGuestCountChange(guestCount - 1)}
+                    disabled={guestCount <= 1}
+                  >
+                    ➖
+                  </button>
+                  <input
+                    type="text"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                    className="form-input stepper-input"
+                    value={guestCount}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\D/g, '');
+                      handleGuestCountChange(val ? parseInt(val, 10) : 1);
+                    }}
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="stepper-btn"
+                    onClick={() => handleGuestCountChange(guestCount + 1)}
+                  >
+                    ➕
+                  </button>
+                </div>
               </div>
 
               {guestNames.map((guestName, index) => (
