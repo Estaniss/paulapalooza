@@ -438,7 +438,7 @@ body {
 }
 
 .lineup-card-desc {
-  font-size: 0.82rem;
+  font-size: 1.2rem;
   color: var(--text-muted);
   line-height: 1.55;
 }
@@ -498,7 +498,7 @@ body {
   line-height: 1.2;
 }
 .info-card-sub {
-  font-size: 0.75rem;
+  font-size: 1.2rem;
   color: var(--text-muted);
   margin-top: 4px;
 }
