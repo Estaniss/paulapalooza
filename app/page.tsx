@@ -16,7 +16,8 @@ export default function Home() {
           <p className="hero-eyebrow">{`✦ PAULA'S BIRTHDAY FEST ✦`}</p>
           <PaulapaloozaLogo />
           <div className="hero-date-banner">19 de Julho de 2026</div>
-          <p className="hero-edition">33ª Edição</p>
+          <p className="hero-edition"></p>
+          {/* <p className="hero-edition">33ª Edição</p> */}
           <a href="#rsvp" className="hero-cta">
             Confirmar Presença
           </a>
@@ -57,15 +58,14 @@ export default function Home() {
           <div className="section-rule">✦</div>
           <div className="lineup-card">
             <label className="yakudoshi-label">
-              Os 33 anos marcam o Yakudoshi, um período simbólico de transição,
-              renovação e novos começos para a mulher japonesa. Por isso, o
-              Paulapaloozza é mais do que uma festa de aniversário. É uma
-              celebração dos 32 anos vividos até aqui, das pessoas que fizeram
-              parte dessa caminhada e da chegada de um novo ciclo. Que as
-              energias negativas fiquem para trás e que os próximos anos sejam
-              repletos de saúde, felicidade, conquistas e momentos
-              inesquecíveis. Será uma alegria celebrar esse momento tão
-              importante ao lado de vocês. 💜
+              O Yakudoshi é um período simbólico de transição, renovação e novos
+              começos para a mulher japonesa. Por isso, o Paulapaloozza é mais
+              do que uma festa de aniversário. É uma celebração dos anos vividos
+              até aqui, das pessoas que fizeram parte dessa caminhada e da
+              chegada de um novo ciclo. Que as energias negativas fiquem para
+              trás e que os próximos anos sejam repletos de saúde, felicidade,
+              conquistas e momentos inesquecíveis. Será uma alegria celebrar
+              esse momento tão importante ao lado de vocês. 💜
             </label>
           </div>
         </div>
@@ -132,7 +132,7 @@ export default function Home() {
               <span className="info-icon">📅</span>
               <div className="info-card-label">Data</div>
               <div className="info-card-value">19 Jul 2026</div>
-              <div className="info-card-sub">Sábado</div>
+              <div className="info-card-sub">Domingo</div>
             </div>
 
             <div className="info-card">

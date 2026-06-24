@@ -276,7 +276,7 @@ body {
 .section-eyebrow {
   display: block;
   text-align: center;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.45em;
   text-transform: uppercase;
@@ -379,7 +379,7 @@ body {
 }
 
 .stat-label {
-  font-size: 0.65rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.25em;
   text-transform: uppercase;
@@ -556,7 +556,7 @@ body {
 }
 
 .form-label {
-  font-size: 0.72rem;
+  font-size: 0.9rem;
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -605,7 +605,7 @@ body {
   background: rgba(255, 255, 255, 0.04);
   color: var(--text-muted);
   font-weight: 700;
-  font-size: 0.88rem;
+  font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.2s;
   font-family: inherit;
@@ -638,7 +638,7 @@ body {
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  font-size: 0.88rem;
+  font-size: 1.2rem;
   color: var(--text-muted);
   text-transform: none;
   letter-spacing: 0;
