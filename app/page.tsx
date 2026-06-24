@@ -1,7 +1,6 @@
 import PaulapaloozaLogo from './components/LogoPaula';
 import RSVPForm from './components/RSVPForm';
 import Sparkles from './components/Sparkles';
-import VideoModal from './components/VideoModal';
 import BandaIcadioCard from './components/BandaIcadioCard';
 
 export default function Home() {
@@ -16,7 +15,7 @@ export default function Home() {
         <div className="hero-content">
           <p className="hero-eyebrow">{`✦ PAULA'S BIRTHDAY FEST ✦`}</p>
           <PaulapaloozaLogo />
-          <div className="hero-date-banner">18 de Julho de 2026</div>
+          <div className="hero-date-banner">19 de Julho de 2026</div>
           <p className="hero-edition">33ª Edição</p>
           <a href="#rsvp" className="hero-cta">
             Confirmar Presença
@@ -38,7 +37,7 @@ export default function Home() {
               <div className="stat-label">Anos de história</div>
             </div>
             <div className="stat-item">
-              <div className="stat-number">18</div>
+              <div className="stat-number">19</div>
               <div className="stat-label">Julho 2026</div>
             </div>
             <div className="stat-item">
@@ -106,7 +105,7 @@ export default function Home() {
               <span className="lineup-tag">
                 ✦ TRANSMISSÃO DA COPA DO MUNDO ✦
               </span>
-              <h3 className="lineup-card-name">DISPUTA DO 3º LUGAR</h3>
+              <h3 className="lineup-card-name">DISPUTA DA GRANDE FINAL</h3>
               <p className="lineup-card-desc">
                 Curta o jogo em um telão especial e torça com a galera.
               </p>
@@ -132,7 +131,7 @@ export default function Home() {
             <div className="info-card">
               <span className="info-icon">📅</span>
               <div className="info-card-label">Data</div>
-              <div className="info-card-value">18 Jul 2026</div>
+              <div className="info-card-value">19 Jul 2026</div>
               <div className="info-card-sub">Sábado</div>
             </div>
 
