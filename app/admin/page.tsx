@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import ExportPdfButton from '../components/ExportPdfButton';
 
 export const dynamic = 'force-dynamic';
 
@@ -225,11 +226,16 @@ export default async function AdminPage({
               <h2 style={{ fontSize: '16px', fontWeight: 700, margin: 0 }}>
                 Lista de nomes
               </h2>
-              <span
-                style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '16px' }}
               >
-                {nameList.length} no total
-              </span>
+                <span
+                  style={{ fontSize: '13px', color: 'rgba(255,255,255,0.6)' }}
+                >
+                  {nameList.length} no total
+                </span>
+                <ExportPdfButton nameList={nameList} />
+              </div>
             </div>
 
             {nameList.length === 0 ? (
